@@ -5,7 +5,7 @@ from pprint import PrettyPrinter
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, send_file
-from geopy.geocoders import Nominatim
+# from geopy.geocoders import Nominatim
 
 
 ################################################################################
@@ -66,12 +66,12 @@ def results():
     context = {
         'date': datetime.now(),
         'city': result_json['name'],
-        'description': result_json['weather']['description'],
-        'temp': result_json['main']['temp'],
+        'description': result_json['weather'][0]['description'],
+        'temp': round(float(result_json['main']['temp']), 2),
         'humidity': result_json['main']['humidity'],
         'wind_speed': result_json['wind']['speed'],
-        'sunrise': datetime.fromtimestamp(result_json['sys']['sunrise']).strftime('%-H:%M'),
-        'sunset': datetime.fromtimestamp(result_json['sys']['sunset']).strftime('%-H:%M'),
+        'sunrise': float(datetime.fromtimestamp(result_json['sys']['sunrise']).strftime('%-H')),
+        'sunset': float(datetime.fromtimestamp(result_json['sys']['sunset']).strftime('%-H')),
         'units_letter': get_letter_for_units(units)
     }
 
@@ -109,27 +109,27 @@ def comparison_results():
     # `city2_info`, to organize the data.
 
     city1_info = {
-        'temp': city1_results['main']['temp'],
-        'humidity': city1_results['main']['humidity'],
-        'wind_speed': city1_results['wind']['speed'],
-        'sunrise': datetime.fromtimestamp(city1_results['sys']['sunrise']).strftime('%-H:%M'),
-        'sunset': datetime.fromtimestamp(city1_results['sys']['sunset']).strftime('%-H:%M'),
+        'temp': round(float(city1_results['main']['temp']), 2),
+        'humidity': round(float(city1_results['main']['humidity'])),
+        'wind_speed': round(float(city1_results['wind']['speed'])),
+        'sunrise': int(datetime.fromtimestamp(city1_results['sys']['sunrise']).strftime('%-H')),
+        'sunset': int(datetime.fromtimestamp(city1_results['sys']['sunset']).strftime('%-H')),
     }
 
     city2_info = {
-        'temp': city2_results['main']['temp'],
-        'humidity': city2_results['main']['humidity'],
-        'wind_speed': city2_results['wind']['speed'],
-        'sunrise': datetime.fromtimestamp(city2_results['sys']['sunrise']).strftime('%-H:%M'),
-        'sunset': datetime.fromtimestamp(city2_results['sys']['sunset']).strftime('%-H:%M'),
+        'temp': round(float(city2_results['main']['temp']), 2),
+        'humidity': round(float(city2_results['main']['humidity'])),
+        'wind_speed': round(float(city2_results['wind']['speed'])),
+        'sunrise': round(int(datetime.fromtimestamp(city2_results['sys']['sunrise']).strftime('%-H'))),
+        'sunset': round(int(datetime.fromtimestamp(city2_results['sys']['sunset']).strftime('%-H'))),
     }
 
     context = {
         'date': datetime.now(),
         'city1': city1_results['name'],
         'city2': city2_results['name'],
-        '1info': city1_info,
-        '2info': city2_info,
+        'city1_info': city1_info,
+        'city2_info': city2_info,
         'units_letter': get_letter_for_units(units)
     }
 
