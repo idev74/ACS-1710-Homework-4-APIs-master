@@ -65,13 +65,13 @@ def results():
     # function.
     context = {
         'date': datetime.now(),
-        'city': '',
-        'description': '',
-        'temp': '',
-        'humidity': '',
-        'wind_speed': '',
-        'sunrise': '',
-        'sunset': '',
+        'city': result_json['name'],
+        'description': result_json['weather']['description'],
+        'temp': result_json['main']['temp'],
+        'humidity': result_json['main']['humidity'],
+        'wind_speed': result_json['wind']['speed'],
+        'sunrise': result_json['sys']['sunrise'],
+        'sunset': result_json['sys']['sunset'],
         'units_letter': get_letter_for_units(units)
     }
 
@@ -85,18 +85,42 @@ def comparison_results():
     # parameters.
     city1 = request.args.get('city1')
     city2 = request.args.get('city2')
-    units = request.args.get('city3')
+    units = request.args.get('units')
 
     # TODO: Make 2 API calls, one for each city. HINT: You may want to write a 
     # helper function for this!
+    city1_call = {
+        'q': city1,
+        'units': units,
+        'appid': API_KEY
+    }
 
+    city2_call = {
+        'q': city2,
+        'units': units,
+        'appid': API_KEY
+    }
 
+    city1_results = requests.get(API_URL, params=city1_call).json()
+    city2_results = requests.get(API_URL, params=city2_call).json()
     # TODO: Pass the information for both cities in the context. Make sure to
     # pass info for the temperature, humidity, wind speed, and sunset time!
     # HINT: It may be useful to create 2 new dictionaries, `city1_info` and 
     # `city2_info`, to organize the data.
-    context = {
 
+    city1_info = {
+
+    }
+
+    city1_info = {
+        
+    }
+
+    context = {
+        'date': datetime.now(),
+        'city1': city1,
+        'city2': city2,
+        'units_letter': get_letter_for_units(units)
     }
 
     return render_template('comparison_results.html', **context)
