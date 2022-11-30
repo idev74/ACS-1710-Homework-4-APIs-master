@@ -70,8 +70,8 @@ def results():
         'temp': result_json['main']['temp'],
         'humidity': result_json['main']['humidity'],
         'wind_speed': result_json['wind']['speed'],
-        'sunrise': result_json['sys']['sunrise'],
-        'sunset': result_json['sys']['sunset'],
+        'sunrise': datetime.fromtimestamp(result_json['sys']['sunrise']).strftime('%-H:%M'),
+        'sunset': datetime.fromtimestamp(result_json['sys']['sunset']).strftime('%-H:%M'),
         'units_letter': get_letter_for_units(units)
     }
 
@@ -109,17 +109,27 @@ def comparison_results():
     # `city2_info`, to organize the data.
 
     city1_info = {
-
+        'temp': city1_results['main']['temp'],
+        'humidity': city1_results['main']['humidity'],
+        'wind_speed': city1_results['wind']['speed'],
+        'sunrise': datetime.fromtimestamp(city1_results['sys']['sunrise']).strftime('%-H:%M'),
+        'sunset': datetime.fromtimestamp(city1_results['sys']['sunset']).strftime('%-H:%M'),
     }
 
-    city1_info = {
-        
+    city2_info = {
+        'temp': city2_results['main']['temp'],
+        'humidity': city2_results['main']['humidity'],
+        'wind_speed': city2_results['wind']['speed'],
+        'sunrise': datetime.fromtimestamp(city2_results['sys']['sunrise']).strftime('%-H:%M'),
+        'sunset': datetime.fromtimestamp(city2_results['sys']['sunset']).strftime('%-H:%M'),
     }
 
     context = {
         'date': datetime.now(),
-        'city1': city1,
-        'city2': city2,
+        'city1': city1_results['name'],
+        'city2': city2_results['name'],
+        '1info': city1_info,
+        '2info': city2_info,
         'units_letter': get_letter_for_units(units)
     }
 
